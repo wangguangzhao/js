@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>测试</title>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+</body>
+<style type="text/css">
+
+</style>
+<script type="text/javascript">
+
+    function test(rada){
+        alert(1)
+        console.log(rada)
+    }
+    (function () {
+
+        function loadData(name, num) {
+            var deff = $.Deferred();
+            var name = name;
+            var num = num;
+
+            this.getData = function () {
+                $.ajax({
+                    type: "POST"
+                    , url: 'http://127.0.0.1:8000/Archives/Test/promis1'
+                    , async: true
+                    ,dataType:"jsonp"
+                    ,jsonp:"cb"
+                    , data: {
+                        token: "e14dc105de1685d27c75d312f7372cbf111-4"
+                        , num: num
+                    }
+                    , success: function (rdata) {
+                        if (rdata.status === 0) {
+                            document.write(rdata.msg+"<br/>");
+                            // deff.resolve();
+                        } else {
+                            document.write(rdata.msg+"<br/>");
+                            deff.notify(rdata.num, rdata.msg);
+
+                        }
+                    }
+                });
+                return deff.promise();
+            };
+            this.created = function () {
+                var that = this;
+                that.getData().progress(function ($num, $msg) {
+                    num = ++$num;
+                    that.getData();
+                    console.log($msg);
+                });
+            };
+
+            this.created();
+            return deff;
+
+        }
+
+        function created() {
+            $.when(loadData("hello", 0)).always(function () {
+                loadData("world", 0)
+            })
+            console.log(1)
+        };
+        return created();
+
+    })();
+
+
+
+</script>
+</html>
