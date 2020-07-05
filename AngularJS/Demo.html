@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js">
+    </script>
+</head>
+<body ng-app="notesApp" ng-controller="mycontroller as ctl">
+<input placeholder="请输入名字" />
+<input value="{{ctl.age}}"/>
+<h1>hello
+    {{ctl.name}}
+</h1>
+<div class="ng-cloak" > 隐藏元素</div>
+
+<div ng-repeat="info in ctl.list track by info.id">
+    <h4  ng-show="info.show"  >{{info.name}}</h4>
+
+</div>
+
+<div>
+
+    <table>
+
+        <tr ng-repeat-start="note in ctl.list2">
+            <td> {{note.label}}</td>
+        </tr>
+        <tr ng-repeat-end>
+            <td>{{note.value}}</td>
+        </tr>
+    </table>
+
+</div>
+
+<button ng-click="ctl.changeName()">点我</button>
+
+</body>
+<style>
+    .show{
+        display:block;
+    }
+    .hide{
+        display: none;
+    }
+</style>
+<script>
+    var ctl = angular.module("notesApp", []).controller("mycontroller", [function () {
+
+        this.name = "王光照";
+        this.age = "123";
+        this.list = [
+            {name:"张三",age:30,show:true,id:1},
+            {name:"李四",age:22,show:true,id:2},
+            {name:"张飞",age:42,show:true,id:3},
+            {name:"赵云",age:32,show:true,id:4},
+        ];
+        this.list2 = [
+            {label:"zhangsan",value:1},
+            {label:"lisi",value:2},
+            {label:"wangwu",value:3}
+        ];
+        var that = this;
+        this.changeName = function () {
+            console.log(that)
+            that.name = "world";
+        };
+        this.isShow = function(val){
+            return {
+                show:val,
+                hide:!val
+            }
+        };
+
+
+    }]);
+</script>
+</html>
